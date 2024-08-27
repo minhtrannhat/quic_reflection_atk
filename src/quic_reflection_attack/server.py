@@ -4,12 +4,14 @@ import uvloop
 
 from aioquic.quic.configuration import QuicConfiguration
 from aioquic.quic.connection import QuicConnection
+from aioquic.asyncio.protocol import QuicConnectionProtocol
 from aioquic.quic.events import QuicEvent, StreamDataReceived
 from aioquic.asyncio import serve  # type: ignore
 
 
-class QuicServerProtocol:
-    def __init__(self):
+class QuicServerProtocol(QuicConnectionProtocol):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.quic: Optional[QuicConnection] = None
 
     def quic_event_received(self, event: QuicEvent) -> None:
